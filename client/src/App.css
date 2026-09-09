@@ -364,8 +364,10 @@ tbody tr { transition: background-color .12s ease; }
 tbody tr:hover { background: var(--surface-hover); }
 td strong { color: var(--ink); font-weight: 700; }
 
-.invoice-link, .file-link { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--accent-ink); }
+.invoice-link, .file-link { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--accent-ink); cursor: pointer; }
 .invoice-link:hover, .file-link:hover { background: var(--surface-hover); }
+.invoice-link.uploading { opacity: .6; cursor: default; }
+.invoice-link.has-file { color: var(--green); border-color: var(--green); }
 
 .cell-stack strong { display: block; }
 .cell-stack small { display: block; margin-top: 3px; color: var(--muted); font-size: 12.5px; font-weight: 500; }
@@ -667,10 +669,8 @@ td strong { color: var(--ink); font-weight: 700; }
 .detail-divider { height: 1px; margin: 24px 0; background: var(--border); }
 
 .user-avatar-list { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; margin-top: 12px; }
-.user-avatar-item { display: flex; align-items: center; gap: 9px; }
+.user-avatar-item { display: flex; align-items: center; gap: 7px; color: var(--faint); }
 .user-avatar-item strong { font-size: 13.5px; font-weight: 700; color: var(--ink); }
-.service-mark.round { border-radius: 50%; }
-.service-mark.mark-sm { width: 28px; height: 28px; font-size: 11px; flex: 0 0 28px; }
 
 .link-cell { border: 0; background: transparent; padding: 0; text-align: left; color: var(--ink); }
 .link-cell:hover strong { color: var(--accent-ink); text-decoration: underline; }

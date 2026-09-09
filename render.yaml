@@ -15,14 +15,3 @@ services:
         value: admin@eclabs.co
       - key: SEED_ADMIN_PASSWORD
         sync: false
-
-  - type: web
-    name: eclabs-frontend
-    env: static
-    rootDir: client
-    plan: free
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_BASE_URL
-        sync: false

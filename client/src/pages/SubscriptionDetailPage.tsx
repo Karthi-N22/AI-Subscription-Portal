@@ -2,14 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { Button, Icon, type IconName } from '../components/ui'
 import { getUsage, saveApiKey, syncUsage, type Granularity, type UsagePoint } from '../api/usage'
 import { detectProvider } from '../utils/provider'
-import { chipTone } from '../utils/chip'
 import { useCurrency } from '../contexts/CurrencyContext'
 import type { Subscription } from '../types/portal'
 
 type Tab = 'Overview' | 'Usage'
 
 function PersonIcon() {
-  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" /></svg>
+  return <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" /></svg>
 }
 
 export function SubscriptionDetailPage({ subscription, onBack }: { subscription: Subscription; onBack: () => void }) {
@@ -47,7 +46,7 @@ function OverviewTab({ subscription }: { subscription: Subscription }) {
     <div className="detail-divider" />
     <div className="detail-field full-width">
       <span>Subscribed users ({subscription.subscribedUsers})</span>
-      {subscription.subscribedUserNames.length ? <div className="user-avatar-list">{subscription.subscribedUserNames.map((name) => <div className="user-avatar-item" key={name}><span className={`service-mark round mark-sm ${chipTone(name)}`}><PersonIcon /></span><strong>{name}</strong></div>)}</div> : <p className="cell-muted">No users assigned yet.</p>}
+      {subscription.subscribedUserNames.length ? <div className="user-avatar-list">{subscription.subscribedUserNames.map((name) => <div className="user-avatar-item" key={name}><PersonIcon /><strong>{name}</strong></div>)}</div> : <p className="cell-muted">No users assigned yet.</p>}
     </div>
   </section>
 }
@@ -86,14 +85,14 @@ function UsageTab({ subscription, provider }: { subscription: Subscription; prov
     if (!apiKey.trim()) return
     setSaving(true)
     try { await saveApiKey(subscription.id, provider, apiKey.trim()); setApiKey(''); setMessage('API key saved.') }
-    catch { setMessage('Unable to save API key — admin access is required.') }
+    catch (error) { setMessage(error instanceof Error ? `Unable to save API key: ${error.message}` : 'Unable to save API key.') }
     finally { setSaving(false) }
   }
 
   const runSync = async () => {
     setSyncing(true)
     try { await syncUsage(subscription.id); setMessage('Usage synced.'); loadUsage() }
-    catch { setMessage('Sync failed — check the saved API key.') }
+    catch (error) { setMessage(error instanceof Error ? `Sync failed: ${error.message}` : 'Sync failed.') }
     finally { setSyncing(false) }
   }
 
