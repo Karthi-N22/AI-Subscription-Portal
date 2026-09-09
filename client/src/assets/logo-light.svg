@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 200" width="780" height="200">
+  <defs>
+    <radialGradient id="sheenL5Light" cx="30%" cy="20%" r="75%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- icon badge: glass style so it reads on the dark gradient hero -->
+  <g transform="translate(20,20) scale(0.3125)">
+    <rect x="0" y="0" width="512" height="512" rx="120" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.4)" stroke-width="6"/>
+    <rect x="0" y="0" width="512" height="512" rx="120" fill="url(#sheenL5Light)"/>
+
+    <path d="M181,396 A150,150 0 1 1 331,396"
+          fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="12" stroke-linecap="round"/>
+
+    <g stroke="#FFFFFF" stroke-width="2.5" stroke-opacity="0.55">
+      <line x1="256" y1="156" x2="351" y2="211"/>
+      <line x1="351" y1="211" x2="351" y2="321"/>
+      <line x1="351" y1="321" x2="256" y2="376"/>
+      <line x1="256" y1="376" x2="161" y2="321"/>
+      <line x1="161" y1="321" x2="161" y2="211"/>
+      <line x1="161" y1="211" x2="256" y2="156"/>
+    </g>
+    <g stroke="#FFFFFF" stroke-width="4">
+      <line x1="256" y1="266" x2="256" y2="156"/>
+      <line x1="256" y1="266" x2="351" y2="211"/>
+      <line x1="256" y1="266" x2="351" y2="321"/>
+      <line x1="256" y1="266" x2="256" y2="376"/>
+      <line x1="256" y1="266" x2="161" y2="321"/>
+      <line x1="256" y1="266" x2="161" y2="211"/>
+    </g>
+
+    <circle cx="256" cy="156" r="15" fill="#FFFFFF"/>
+    <circle cx="351" cy="211" r="15" fill="#FFFFFF"/>
+    <circle cx="351" cy="321" r="15" fill="#FFFFFF"/>
+    <circle cx="256" cy="376" r="15" fill="#FFFFFF"/>
+    <circle cx="161" cy="321" r="15" fill="#FFFFFF"/>
+    <circle cx="161" cy="211" r="15" fill="#FFFFFF"/>
+
+    <circle cx="256" cy="266" r="30" fill="#FBBF24"/>
+  </g>
+
+  <!-- divider -->
+  <line x1="206" y1="40" x2="206" y2="160" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+
+  <!-- wordmark -->
+  <text x="228" y="118" font-family="Arial, Helvetica, sans-serif" font-weight="800"
+        font-size="66" fill="#FFFFFF" letter-spacing="-1">EC<tspan fill="#C7D2FE">&#160;LABS</tspan></text>
+  <text x="230" y="158" font-family="Arial, Helvetica, sans-serif" font-weight="800"
+        font-size="36" fill="rgba(255,255,255,0.92)" letter-spacing="0.8">AI SUBSCRIPTION PORTAL</text>
+</svg>

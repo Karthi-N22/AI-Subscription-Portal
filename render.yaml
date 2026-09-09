@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: eclabs-backend
+    env: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install && npx prisma generate && npx prisma migrate deploy && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: USAGE_ENCRYPTION_KEY
+        sync: false
+      - key: SEED_ADMIN_EMAIL
+        value: admin@eclabs.co
+      - key: SEED_ADMIN_PASSWORD
+        sync: false
+
+  - type: web
+    name: eclabs-frontend
+    env: static
+    rootDir: client
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false

@@ -1,0 +1,27 @@
+.heading-actions { display: flex; align-items: end; gap: 12px; }
+
+.month-switcher { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 11px; font-weight: 700; }
+.month-switcher select { min-width: 155px; padding: 11px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--ink); font-size: 12.5px; font-weight: 500; }
+
+.subscription-ledger { display: flex; flex-direction: column; gap: 16px; }
+
+.ledger-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.ledger-summary-card { padding: 18px 20px; border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--shadow-sm); }
+.ledger-summary-card:nth-child(2) { border-top-color: #2f8fd1; }
+.ledger-summary-card:nth-child(3) { border-top-color: var(--green); }
+.ledger-summary-card:nth-child(4) { border-top-color: var(--amber); }
+.ledger-summary-card span { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .8px; }
+.ledger-summary-card strong { display: block; margin: 13px 0 5px; font-size: 24px; font-weight: 800; letter-spacing: -.4px; }
+.ledger-summary-card small { color: var(--muted); font-size: 11.5px; }
+
+.full-field { grid-column: 1 / -1; }
+.full-field small { display: block; margin-top: 6px; color: var(--faint); font-size: 11px; text-transform: none; letter-spacing: normal; }
+
+.user-fetch-list { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; min-height: 52px; margin-top: 7px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-soft); text-transform: none; letter-spacing: normal; }
+.chip-accent { background: var(--accent-soft); color: var(--accent-ink); }
+.user-fetch-empty { color: var(--faint); font-size: 12.5px; font-weight: 500; }
+
+@media (max-width: 650px) {
+  .heading-actions { align-items: stretch; flex-direction: column; width: 100%; }
+  .ledger-summary { grid-template-columns: 1fr; }
+}

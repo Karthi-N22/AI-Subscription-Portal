@@ -1,0 +1,20 @@
+export type Project = { id: string; name: string; monthlyBudget: number | null; budgetCurrency: string }
+export type Subscription = { id: string; month: string; serviceName: string; vendor: string; projectId: string; billingCycle: 'MONTHLY' | 'ANNUAL' | 'ONE_OFF'; nativeCost: number; currency: string; usdMonthlyCost: number; paymentMode: string; renewalDate: string; status: 'ACTIVE' | 'CANCELLED' }
+export type Seat = { id: string; name: string; email: string; subscriptionId: string; assignedAt: string; licenseType: 'INDIVIDUAL' | 'TEAM' }
+export type Invoice = { id: string; invoiceNumber: string; billingPeriod: string; fileName: string; filePath: string; amount: number; invoiceDate: string; subscriptionId: string }
+export type User = { id: string; email: string; name: string; role: 'ADMIN' | 'MEMBER' | 'VIEWER' }
+
+export const seedCredentials = { email: process.env.SEED_ADMIN_EMAIL ?? 'admin@eclabs.co', password: process.env.SEED_ADMIN_PASSWORD ?? 'ECLabs@2026' }
+
+export const projects: Project[] = [{ id: 'ecd', name: 'ECDS', monthlyBudget: null, budgetCurrency: 'USD' }, { id: 'new-dawn', name: 'New Dawn', monthlyBudget: 750, budgetCurrency: 'USD' }]
+export const subscriptions: Subscription[] = [
+  { id: 'cursor', month: '2026-09', serviceName: 'Cursor', vendor: 'Anysphere', projectId: 'new-dawn', billingCycle: 'MONTHLY', nativeCost: 40, currency: 'USD', usdMonthlyCost: 40, paymentMode: 'Company card', renewalDate: '2026-09-18', status: 'ACTIVE' },
+  { id: 'claude-code', month: '2026-09', serviceName: 'Claude Code', vendor: 'Anthropic', projectId: 'new-dawn', billingCycle: 'MONTHLY', nativeCost: 100, currency: 'USD', usdMonthlyCost: 100, paymentMode: 'Company card', renewalDate: '2026-09-26', status: 'ACTIVE' },
+  { id: 'adobe', month: '2026-09', serviceName: 'Adobe Creative Cloud', vendor: 'Adobe', projectId: 'new-dawn', billingCycle: 'MONTHLY', nativeCost: 89.99, currency: 'USD', usdMonthlyCost: 89.99, paymentMode: 'Company card', renewalDate: '2026-10-04', status: 'ACTIVE' },
+  { id: 'aws', month: '2026-09', serviceName: 'AWS', vendor: 'Amazon Web Services', projectId: 'ecd', billingCycle: 'MONTHLY', nativeCost: 450, currency: 'USD', usdMonthlyCost: 450, paymentMode: 'Bank transfer', renewalDate: '2026-09-12', status: 'ACTIVE' },
+  { id: 'azure', month: '2026-09', serviceName: 'Azure', vendor: 'Microsoft', projectId: 'ecd', billingCycle: 'MONTHLY', nativeCost: 290, currency: 'USD', usdMonthlyCost: 290, paymentMode: 'Bank transfer', renewalDate: '2026-09-21', status: 'ACTIVE' },
+  { id: 'mailtrap', month: '2026-09', serviceName: 'Mailtrap', vendor: 'Railsware', projectId: 'ecd', billingCycle: 'ANNUAL', nativeCost: 180, currency: 'USD', usdMonthlyCost: 15, paymentMode: 'Company card', renewalDate: '2026-12-15', status: 'ACTIVE' },
+]
+export const seats: Seat[] = [{ id: 'seat-1', name: 'Alex Morgan', email: 'admin@eclabs.co', subscriptionId: 'cursor', assignedAt: '2026-08-14', licenseType: 'INDIVIDUAL' }, { id: 'seat-2', name: 'Priya Shah', email: 'priya@eclabs.co', subscriptionId: 'cursor', assignedAt: '2026-08-14', licenseType: 'INDIVIDUAL' }, { id: 'seat-3', name: 'Alex Morgan', email: 'admin@eclabs.co', subscriptionId: 'claude-code', assignedAt: '2026-08-20', licenseType: 'TEAM' }, { id: 'seat-4', name: 'Sam Wilson', email: 'sam@eclabs.co', subscriptionId: 'claude-code', assignedAt: '2026-08-20', licenseType: 'TEAM' }]
+export const invoices: Invoice[] = [{ id: 'inv-1', invoiceNumber: 'INV-2026-091', billingPeriod: 'Sep 2026', fileName: 'cursor-september.pdf', filePath: 'uploads/cursor-september.pdf', amount: 40, invoiceDate: '2026-09-02', subscriptionId: 'cursor' }, { id: 'inv-2', invoiceNumber: 'AWS-88421', billingPeriod: 'Aug 2026', fileName: 'aws-august.pdf', filePath: 'uploads/aws-august.pdf', amount: 450, invoiceDate: '2026-09-01', subscriptionId: 'aws' }]
+export const users: User[] = [{ id: 'user-1', email: 'admin@eclabs.co', name: 'Alex Morgan', role: 'ADMIN' }, { id: 'user-2', email: 'priya@eclabs.co', name: 'Priya Shah', role: 'MEMBER' }, { id: 'user-3', email: 'finance@eclabs.co', name: 'Finance team', role: 'VIEWER' }]
