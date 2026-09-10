@@ -1,5 +1,5 @@
 import ExcelJS from 'exceljs'
-import { projects, seats, subscriptions } from '../data/store.js'
+import { prisma } from '../prisma.js'
 import { getUsdToInrRate } from './fxRate.js'
 
 const BRAND = '4C4FEB'
@@ -33,8 +33,20 @@ const styleHeaderRow = (row: ExcelJS.Row) => { row.height = 22; row.eachCell((ce
 
 const LAST_COLUMN = 'H'
 
+type Item = { id: string; serviceName: string; vendor: string; projectId: string; billingCycle: 'MONTHLY' | 'ANNUAL' | 'ONE_OFF'; usdMonthlyCost: number; paymentMode: string; renewalDate: Date | null; status: 'ACTIVE' | 'CANCELLED' }
+type SeatRow = { id: string; name: string; email: string; subscriptionId: string; assignedAt: Date; licenseType: 'INDIVIDUAL' | 'TEAM' }
+type ProjectRow = { id: string; name: string; monthlyBudget: number | null }
+
 export async function buildSubscriptionsWorkbook(month: string, currency: ExportCurrency = 'USD'): Promise<ExcelJS.Workbook> {
-  const monthlyItems = subscriptions.filter((item) => item.month === month)
+  const [rawItems, rawProjects] = await Promise.all([
+    prisma.subscription.findMany({ where: { month } }),
+    prisma.project.findMany(),
+  ])
+  const monthlyItems: Item[] = rawItems.map((item) => ({ id: item.id, serviceName: item.serviceName, vendor: item.vendor, projectId: item.projectId, billingCycle: item.billingCycle, usdMonthlyCost: Number(item.usdMonthlyCost), paymentMode: item.paymentMode, renewalDate: item.renewalDate, status: item.status }))
+  const projects: ProjectRow[] = rawProjects.map((project) => ({ id: project.id, name: project.name, monthlyBudget: project.monthlyBudget == null ? null : Number(project.monthlyBudget) }))
+  const rawSeats = await prisma.seat.findMany({ where: { subscriptionId: { in: monthlyItems.map((item) => item.id) } } })
+  const seats: SeatRow[] = rawSeats.map((seat) => ({ id: seat.id, name: seat.name, email: seat.email, subscriptionId: seat.subscriptionId, assignedAt: seat.assignedAt, licenseType: seat.licenseType }))
+
   const activeItems = monthlyItems.filter((item) => item.status === 'ACTIVE')
   const monthlySpend = activeItems.reduce((sum, item) => sum + item.usdMonthlyCost, 0)
   const totalBudget = projects.reduce((sum, project) => sum + (project.monthlyBudget ?? 0), 0)
@@ -53,7 +65,7 @@ export async function buildSubscriptionsWorkbook(month: string, currency: Export
   workbook.creator = 'EC LABS'
   workbook.created = new Date()
 
-  buildSheet(workbook, month, currency, rate, { monthlySpend, budgetUsedPercent, remainingBudget, subscribedUsers, projectRows }, monthlyItems, assignments)
+  buildSheet(workbook, month, currency, rate, { monthlySpend, budgetUsedPercent, remainingBudget, subscribedUsers, projectRows }, monthlyItems, assignments, projects)
 
   return workbook
 }
@@ -64,8 +76,9 @@ function buildSheet(
   currency: ExportCurrency,
   rate: number,
   data: { monthlySpend: number; budgetUsedPercent: number | null; remainingBudget: number | null; subscribedUsers: number; projectRows: { name: string; spend: number; budget: number | null; percent: number | null }[] },
-  items: typeof subscriptions,
-  assignments: typeof seats,
+  items: Item[],
+  assignments: SeatRow[],
+  projects: ProjectRow[],
 ) {
   const sheet = workbook.addWorksheet('Subscription Analytics', { views: [{ showGridLines: false }] })
   sheet.columns = [{ width: 26 }, { width: 20 }, { width: 16 }, { width: 16 }, { width: 20 }, { width: 18 }, { width: 18 }, { width: 16 }]
@@ -167,7 +180,7 @@ function buildSheet(
 
   const projectName = (projectId: string) => projects.find((project) => project.id === projectId)?.name ?? 'Unknown project'
   items.forEach((item, index) => {
-    const assignedSeats = seats.filter((seat) => seat.subscriptionId === item.id)
+    const assignedSeats = assignments.filter((seat) => seat.subscriptionId === item.id)
     const row = sheet.getRow(rowIndex)
     row.values = [
       item.serviceName,
@@ -177,7 +190,7 @@ function buildSheet(
       { formula: moneyFormula(item.usdMonthlyCost, rate), result: display(item.usdMonthlyCost, currency, rate) },
       item.paymentMode,
       assignedSeats.length,
-      item.renewalDate ? new Date(item.renewalDate) : '—',
+      item.renewalDate ?? '—',
     ]
     row.getCell(5).alignment = { vertical: 'middle', horizontal: 'right' }
     row.getCell(8).numFmt = dateFormat

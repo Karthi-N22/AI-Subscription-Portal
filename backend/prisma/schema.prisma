@@ -53,7 +53,7 @@ model Subscription {
   currency       String
   usdMonthlyCost Decimal            @db.Decimal(12, 2)
   paymentMode    String
-  renewalDate    DateTime
+  renewalDate    DateTime?
   status         SubscriptionStatus @default(ACTIVE)
   projectId      String
   project        Project            @relation(fields: [projectId], references: [id])
@@ -67,6 +67,7 @@ model Seat {
   name           String
   email          String
   licenseType    LicenseType  @default(INDIVIDUAL)
+  assignedAt     DateTime     @default(now())
   subscriptionId String
   subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 
