@@ -177,7 +177,7 @@ function buildSheet(
       { formula: moneyFormula(item.usdMonthlyCost, rate), result: display(item.usdMonthlyCost, currency, rate) },
       item.paymentMode,
       assignedSeats.length,
-      new Date(item.renewalDate),
+      item.renewalDate ? new Date(item.renewalDate) : '—',
     ]
     row.getCell(5).alignment = { vertical: 'middle', horizontal: 'right' }
     row.getCell(8).numFmt = dateFormat

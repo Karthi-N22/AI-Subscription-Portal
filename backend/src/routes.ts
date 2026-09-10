@@ -18,7 +18,7 @@ router.get('/dashboard', (request, response) => {
   const month = String(request.query.month ?? '2026-09')
   const monthlyItems = subscriptions.filter((item) => item.month === month)
   const monthlySpend = monthlyItems.filter((item) => item.status === 'ACTIVE').reduce((sum, item) => sum + item.usdMonthlyCost, 0)
-  const renewals = monthlyItems.filter((item) => item.status === 'ACTIVE').sort((a, b) => a.renewalDate.localeCompare(b.renewalDate)).slice(0, 4)
+  const renewals = monthlyItems.filter((item) => item.status === 'ACTIVE' && item.renewalDate).sort((a, b) => a.renewalDate.localeCompare(b.renewalDate)).slice(0, 4)
   response.json({ data: { month, monthlySpend, activeSubscriptions: monthlyItems.filter((item) => item.status === 'ACTIVE').length, activeSeats: seats.length, upcomingRenewals: renewals.length, renewals, projects: projects.map((project) => ({ ...project, spend: monthlyItems.filter((item) => item.projectId === project.id).reduce((sum, item) => sum + item.usdMonthlyCost, 0) })) } })
 })
 router.get('/projects', (_request, response) => response.json({ data: projects }))
